@@ -12,6 +12,7 @@ function App() {
                     {publicRoutes.map((route, index) => {
                         const Page = route.component;
 
+                        // let Layout = route.layout ? route.layout : route.layout === null ? Fragment : DefaultLayout;
                         // Layout mặc định
                         let Layout = DefaultLayout;
                         // Nếu có layout thì layout = layout ngược lại ko có
