@@ -2,7 +2,7 @@ import Header from '~/components/Layout/components/Header';
 
 // chứa all layout hiện tại
 // content động truyền từ ngoài vào -> children
-function DefaultLayout({ children }) {
+function HeaderOnly({ children }) {
     return (
         <div>
             <Header />
@@ -13,4 +13,4 @@ function DefaultLayout({ children }) {
     );
 }
 
-export default DefaultLayout;
+export default HeaderOnly;
