@@ -10,6 +10,7 @@ function App() {
             <div className="App">
                 <Routes>
                     {publicRoutes.map((route, index) => {
+                        // đặt biến ra ngoài vì phải truyền vào element
                         const Page = route.component;
 
                         // let Layout = route.layout ? route.layout : route.layout === null ? Fragment : DefaultLayout;
