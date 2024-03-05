@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 // bind giúp viết className dạng: .post-item
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faMagnifyingGlass, faSignIn, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
 
+import Button from '~/components/Button';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
@@ -23,7 +24,7 @@ function Header() {
         }, 0);
     }, []);
 
-    // Thẻ cha thì cứ wrapper 17
+    // Thẻ cha thì cứ đặt là wrapper
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -55,7 +56,21 @@ function Header() {
                     </div>
                 </Tippy>
 
-                <div className={cx('actions')}></div>
+                <div className={cx('actions')}>
+                    {/* to='/login' sang link nội bộ sử dụng react-router-dom 
+                    link ngoài ko được pải dùng href */}
+                    {/* <Button primary to="/login" onClick={() => alert('Clicked!')}> */}
+                    {/* <Button primary href='https://fullstack.edu.vn/' target='_blank'> */}
+                    {/* <Button outline small> */}
+                    {/* <Button outline large> */}
+                    <Button text>Upload</Button>
+                    {/* <Button primary disabled onClick={() => alert('Clicked!')} onMouseUp={() => {}}> */}
+                    {/* <Button primary rounded> */}
+                    {/* <Button rounded className={cx('custom-login')}> */}
+                    {/* <Button primary leftIcon={<FontAwesomeIcon icon={faSignIn} />}> */}
+                    <Button primary>Log in</Button>
+                    {/* <Button primary>Log in</Button> */}
+                </div>
             </div>
         </header>
     );
