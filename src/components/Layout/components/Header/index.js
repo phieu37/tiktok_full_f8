@@ -28,6 +28,37 @@ const MENU_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faEarthAsia} />,
         title: 'English',
+        // quy ước có children hiểu là sub cấp 2, data sẽ chứa item con
+        children: {
+            title: 'Language',
+            data: [
+                {
+                    type: 'language',
+                    code: 'en',
+                    title: 'English',
+                },
+                {
+                    type: 'language',
+                    code: 'vi',
+                    title: 'Tiếng Việt',
+                    // children: {
+                    //     title: 'Language',
+                    //     data: [
+                    //         {
+                    //             type: 'language',
+                    //             code: 'vi',
+                    //             title: 'Tiếng Việt tập 1',
+                    //         },
+                    //         {
+                    //             type: 'language',
+                    //             code: 'vi',
+                    //             title: 'Tiếng Việt tập 2',
+                    //         },
+                    //     ],
+                    // },
+                },
+            ],
+        },
     },
     {
         icon: <FontAwesomeIcon icon={faCircleQuestion} />,
@@ -42,6 +73,7 @@ const MENU_ITEMS = [
 
 function Header() {
     const [searchResult, setSearchResult] = useState([]);
+
     // API
     useEffect(() => {
         setTimeout(() => {
@@ -50,12 +82,26 @@ function Header() {
         }, 0);
     }, []);
 
+    // Handle logic
+    const handleMenuChange = (menuItem) => {
+        // console.log(menuItem);
+        switch (menuItem.type) {
+            case 'Language':
+                // Handle change language
+                break;
+            default:
+                break;
+        }
+    };
+
     // Thẻ cha thì cứ đặt là wrapper
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
+                {/* logo */}
                 <img src={images.logo} alt="Tiktok" />
 
+                {/* search */}
                 <Tippy
                     interactive
                     visible={searchResult.length > 0} // KQ tìm kiếm > 0 thì hiện
@@ -76,12 +122,14 @@ function Header() {
                             <FontAwesomeIcon icon={faCircleXmark} />
                         </button>
                         <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
+
                         <button className={cx('search-btn')}>
                             <FontAwesomeIcon icon={faMagnifyingGlass} />
                         </button>
                     </div>
                 </Tippy>
 
+                {/* login/upload */}
                 <div className={cx('actions')}>
                     {/* to='/login' sang link nội bộ sử dụng react-router-dom 
                     link ngoài ko được pải dùng href */}
@@ -98,7 +146,7 @@ function Header() {
                     {/* <Button primary>Log in</Button> */}
 
                     {/* nút 3 chấm */}
-                    <Menu items={MENU_ITEMS}>
+                    <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
                         <button className={cx('more-btn')}>
                             <FontAwesomeIcon icon={faEllipsisVertical} />
                         </button>
