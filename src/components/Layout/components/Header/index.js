@@ -5,14 +5,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleQuestion,
     faCircleXmark,
+    faCloudUpload,
+    faCoins,
     faEarthAsia,
     faEllipsisVertical,
+    faGear,
     faKeyboard,
     faMagnifyingGlass,
+    faUser,
+    faMessage,
     faSignIn,
     faSpinner,
+    faSignOut,
 } from '@fortawesome/free-solid-svg-icons';
-import Tippy from '@tippyjs/react/headless';
+import Tippy from '@tippyjs/react';
+import HeadlessTippy from '@tippyjs/react/headless';
+import 'tippy.js/dist/tippy.css';
 
 import Button from '~/components/Button';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
@@ -74,6 +82,10 @@ const MENU_ITEMS = [
 function Header() {
     const [searchResult, setSearchResult] = useState([]);
 
+    // VD: có user đăng nhập
+    const currentUser = true;
+    // const currentUser = false;
+
     // API
     useEffect(() => {
         setTimeout(() => {
@@ -94,6 +106,31 @@ function Header() {
         }
     };
 
+    const userMenu = [
+        {
+            icon: <FontAwesomeIcon icon={faUser} />,
+            title: 'View propffile',
+            to: '/@hoa',
+        },
+        {
+            icon: <FontAwesomeIcon icon={faCoins} />,
+            title: 'Get coins',
+            to: '/coin',
+        },
+        {
+            icon: <FontAwesomeIcon icon={faGear} />,
+            title: 'Settings',
+            to: '/settings',
+        },
+        ...MENU_ITEMS,
+        {
+            icon: <FontAwesomeIcon icon={faSignOut} />,
+            title: 'Log out',
+            to: '/logout',
+            separate: true // Custom thêm class separate để tạo gạch ngang
+        },
+    ];
+
     // Thẻ cha thì cứ đặt là wrapper
     return (
         <header className={cx('wrapper')}>
@@ -101,8 +138,8 @@ function Header() {
                 {/* logo */}
                 <img src={images.logo} alt="Tiktok" />
 
-                {/* search */}
-                <Tippy
+                {/* ô tìm kiếm */}
+                <HeadlessTippy
                     interactive
                     visible={searchResult.length > 0} // KQ tìm kiếm > 0 thì hiện
                     render={(attrs) => (
@@ -127,29 +164,57 @@ function Header() {
                             <FontAwesomeIcon icon={faMagnifyingGlass} />
                         </button>
                     </div>
-                </Tippy>
+                </HeadlessTippy>
 
-                {/* login/upload */}
+                {/* login/upload có user và ko có user sẽ có nút khác nhau*/}
                 <div className={cx('actions')}>
-                    {/* to='/login' sang link nội bộ sử dụng react-router-dom 
-                    link ngoài ko được pải dùng href */}
-                    {/* <Button primary to="/login" onClick={() => alert('Clicked!')}> */}
-                    {/* <Button primary href='https://fullstack.edu.vn/' target='_blank'> */}
-                    {/* <Button outline small> */}
-                    {/* <Button outline large> */}
-                    <Button text>Upload</Button>
-                    {/* <Button primary disabled onClick={() => alert('Clicked!')} onMouseUp={() => {}}> */}
-                    {/* <Button primary rounded> */}
-                    {/* <Button rounded className={cx('custom-login')}> */}
-                    {/* <Button primary leftIcon={<FontAwesomeIcon icon={faSignIn} />}> */}
-                    <Button primary>Log in</Button>
-                    {/* <Button primary>Log in</Button> */}
+                    {currentUser ? (
+                        <>
+                            <Tippy
+                                // trigger='click' //click để tắt bật
+                                delay={[0, 200]}
+                                content="Upload video"
+                                placement="bottom"
+                            >
+                                <button className={cx('action-btn')}>
+                                    <FontAwesomeIcon icon={faCloudUpload} />
+                                </button>
+                            </Tippy>
+                        </>
+                    ) : (
+                        <>
+                            {/* to='/login' sang link nội bộ sử dụng react-router-dom link ngoài ko được pải dùng href */}
+                            {/* <Button primary to="/login" onClick={() => alert('Clicked!')}> */}
+                            {/* <Button primary href='https://fullstack.edu.vn/' target='_blank'> */}
+                            {/* <Button outline small> */}
+                            {/* <Button outline large> */}
+                            <Button text>Upload</Button>
+                            {/* <Button primary disabled onClick={() => alert('Clicked!')} onMouseUp={() => {}}> */}
+                            {/* <Button primary rounded> */}
+                            {/* <Button rounded className={cx('custom-login')}> */}
+                            {/* <Button primary leftIcon={<FontAwesomeIcon icon={faSignIn} />}> */}
+                            <Button primary>Log in</Button>
+                            {/* <Button primary>Log in</Button> */}
+                        </>
+                    )}
 
-                    {/* nút 3 chấm */}
-                    <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
-                        <button className={cx('more-btn')}>
-                            <FontAwesomeIcon icon={faEllipsisVertical} />
-                        </button>
+                    {/* nút 3 chấm khi chưa đăng nhập, avatar khi đã đăng nhập*/}
+                    <Menu
+                        // Nếu có currentUser thì dùng userMenu ngược lại dùng MENU_ITEMS
+                        items={currentUser ? userMenu : MENU_ITEMS}
+                        onChange={handleMenuChange}
+                    >
+                        {currentUser ? (
+                            <img
+                                className={cx('user-avatar')}
+                                src="https://p16-sign-sg.tiktokcdn.com/aweme/100x100/tos-alisg-avt-0068/c9f14092fbcdc46eb2eaaae3cdaf5302.jpeg?lk3s=a5d48078&x-expires=1709956800&x-signature=HZc7Qdq%2BPOobrQGql5Hl%2BcL9aIc%3D"
+                                alt="Phieu"
+                            />
+                        ) : (
+                            <button className={cx('more-btn')}>
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </button>
+                        )}
                     </Menu>
                 </div>
             </div>
