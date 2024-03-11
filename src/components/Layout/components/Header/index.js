@@ -28,6 +28,8 @@ import styles from './Header.module.scss';
 import images from '~/assets/images';
 import AccountItem from '~/components/AccountItem';
 import Menu from '~/components/Popper/Menu';
+import { UploadIcon } from '~/components/icons';
+import Image from '~/components/Image';
 
 const cx = classNames.bind(styles);
 // console.log(images.logo); // default: "/static/media/logo.a6485b602042e794da9eb0c0d4f7c77c.svg"
@@ -127,7 +129,7 @@ function Header() {
             icon: <FontAwesomeIcon icon={faSignOut} />,
             title: 'Log out',
             to: '/logout',
-            separate: true // Custom thêm class separate để tạo gạch ngang
+            separate: true, // Custom thêm class separate để tạo gạch ngang
         },
     ];
 
@@ -177,7 +179,8 @@ function Header() {
                                 placement="bottom"
                             >
                                 <button className={cx('action-btn')}>
-                                    <FontAwesomeIcon icon={faCloudUpload} />
+                                    {/* <FontAwesomeIcon icon={faCloudUpload} /> */}
+                                    <UploadIcon />
                                 </button>
                             </Tippy>
                         </>
@@ -205,10 +208,11 @@ function Header() {
                         onChange={handleMenuChange}
                     >
                         {currentUser ? (
-                            <img
+                            <Image
                                 className={cx('user-avatar')}
-                                src="https://p16-sign-sg.tiktokcdn.com/aweme/100x100/tos-alisg-avt-0068/c9f14092fbcdc46eb2eaaae3cdaf5302.jpeg?lk3s=a5d48078&x-expires=1709956800&x-signature=HZc7Qdq%2BPOobrQGql5Hl%2BcL9aIc%3D"
+                                src="https:://p16-sign-sg.tiktokcdn.com/aweme/100x100/tos-alisg-avt-0068/c9f14092fbcdc46eb2eaaae3cdaf5302.jpeg?lk3s=a5d48078&x-expires=1709956800&x-signature=HZc7Qdq%2BPOobrQGql5Hl%2BcL9aIc%3D"
                                 alt="Phieu"
+                                fallback="https://fullstack.edu.vn/static/media/f8-icon.18cd71cfcfa33566a22b.png"
                             />
                         ) : (
                             <button className={cx('more-btn')}>
