@@ -19,17 +19,18 @@ import {
     faSignOut,
 } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react';
-import HeadlessTippy from '@tippyjs/react/headless';
+// import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 
 import Button from '~/components/Button';
-import { Wrapper as PopperWrapper } from '~/components/Popper';
+// import { Wrapper as PopperWrapper } from '~/components/Popper';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
-import AccountItem from '~/components/AccountItem';
+// import AccountItem from '~/components/AccountItem';
 import Menu from '~/components/Popper/Menu';
-import { UploadIcon } from '~/components/icons';
+import { InboxIcon, MessageIcon, SearchIcon, UploadIcon } from '~/components/icons';
 import Image from '~/components/Image';
+import Search from '../Search';
 
 const cx = classNames.bind(styles);
 // console.log(images.logo); // default: "/static/media/logo.a6485b602042e794da9eb0c0d4f7c77c.svg"
@@ -82,19 +83,19 @@ const MENU_ITEMS = [
 ];
 
 function Header() {
-    const [searchResult, setSearchResult] = useState([]);
+    // const [searchResult, setSearchResult] = useState([]);
 
     // VD: có user đăng nhập
     const currentUser = true;
     // const currentUser = false;
 
     // API
-    useEffect(() => {
-        setTimeout(() => {
-            // setSearchResult([1, 2, 3]);
-            setSearchResult([]);
-        }, 0);
-    }, []);
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setSearchResult([1, 2, 3]);
+    //         // setSearchResult([]);
+    //     }, 0);
+    // }, []);
 
     // Handle logic
     const handleMenuChange = (menuItem) => {
@@ -140,47 +141,29 @@ function Header() {
                 {/* logo */}
                 <img src={images.logo} alt="Tiktok" />
 
-                {/* ô tìm kiếm */}
-                <HeadlessTippy
-                    interactive
-                    visible={searchResult.length > 0} // KQ tìm kiếm > 0 thì hiện
-                    render={(attrs) => (
-                        <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-                            <PopperWrapper>
-                                <h4 className={cx('search-title')}>Accounts</h4>
-                                <AccountItem />
-                                <AccountItem />
-                                <AccountItem />
-                            </PopperWrapper>
-                        </div>
-                    )}
-                >
-                    <div className={cx('search')}>
-                        <input placeholder="Tìm kiếm" spellCheck={false} />
-                        <button className={cx('clear')}>
-                            <FontAwesomeIcon icon={faCircleXmark} />
-                        </button>
-                        <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
-
-                        <button className={cx('search-btn')}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        </button>
-                    </div>
-                </HeadlessTippy>
+                {/* Search */}
+                <Search />
 
                 {/* login/upload có user và ko có user sẽ có nút khác nhau*/}
                 <div className={cx('actions')}>
                     {currentUser ? (
                         <>
-                            <Tippy
-                                // trigger='click' //click để tắt bật
-                                delay={[0, 200]}
-                                content="Upload video"
-                                placement="bottom"
-                            >
+                            {/* // trigger='click' // click để tắt bật */}
+                            <Tippy delay={[0, 50]} content="Upload video" placement="bottom">
                                 <button className={cx('action-btn')}>
                                     {/* <FontAwesomeIcon icon={faCloudUpload} /> */}
                                     <UploadIcon />
+                                </button>
+                            </Tippy>
+                            <Tippy delay={[0, 50]} content="Message" placement="bottom">
+                                <button className={cx('action-btn')}>
+                                    <MessageIcon />
+                                </button>
+                            </Tippy>
+                            <Tippy delay={[0, 50]} content="Inbox" placement="bottom">
+                                <button className={cx('action-btn')}>
+                                    <InboxIcon />
+                                    <span className={cx('badge')}>12</span>
                                 </button>
                             </Tippy>
                         </>
