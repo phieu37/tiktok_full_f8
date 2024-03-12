@@ -15,7 +15,7 @@ export const UploadIcon = ({ width = '3.2rem', height = '3.2rem', className }) =
     </svg>
 );
 
-export const MessageIcon = ({ width = '2.rem', height = '2.rem', className }) => (
+export const MessageIcon = ({ width = '2.6rem', height = '2.6rem', className }) => (
     <svg
         className={className}
         width={width}
@@ -55,7 +55,7 @@ export const SearchIcon = ({ width = '2.4rem', height = '2.4rem', className }) =
         width={width}
         height={height}
         viewBox="0 0 48 48"
-        fill="rgba(22, 24, 35, 0.34)"
+        fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
     >
         <path
