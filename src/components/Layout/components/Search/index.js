@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import AccountItem from '~/components/AccountItem';
 import { SearchIcon } from '~/components/icons';
+import { useDebounce } from '~/hooks';
 import styles from './Search.module.scss';
 
 const cx = classNames.bind(styles);
@@ -15,6 +16,11 @@ function Search() {
     const [searchResult, setSearchResult] = useState([]);
     const [showResult, setShowResult] = useState(true);
     const [loading, setLoading] = useState(false);
+
+    // truyền value muốn delay và truyền thời gian muốn delay theo hooks vừa custom
+    // user ngừng gõ 500ms mới bắn api
+    // 1. '' -> 2. 'h' -> 3. 'ho' -> 4. 'hoa'
+    const debounced = useDebounce(searchValue, 500)
 
     const inputRef = useRef();
 
@@ -29,7 +35,9 @@ function Search() {
     // Api thật
     useEffect(() => {
         // Ko có searchValue thì return để thoát hàm, trim fix bug dấu cách
-        if (!searchValue.trim()) {
+        // .trimStart() chỗ input giống tiktok
+        // if (!searchValue.trim()) {
+        if (!debounced) {
             setSearchResult([])
             return;
         }
@@ -37,7 +45,7 @@ function Search() {
         setLoading(true);
 
         // encodeURIComponent() mã hóa sang định dạng URL để ko vi phạm quy ước của querry parameter
-        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(searchValue)}&type=less`)
+        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
             .then((res) => res.json(res))
             .then((res) => {
                 setSearchResult(res.data);
@@ -46,7 +54,7 @@ function Search() {
             .catch(() => {
                 setLoading(false);
             })
-    }, [searchValue]);
+    }, [debounced]);
 
     // tách hàm làm 3 việc: xóa KQ tìm kiếm, xóa text, focus lại (dùng lại hàm nhiều lần)
     const handleClear = () => {
@@ -82,7 +90,7 @@ function Search() {
                     value={searchValue}
                     placeholder="Search accounts and videos"
                     spellCheck={false}
-                    onChange={(e) => setSearchValue(e.target.value)}
+                    onChange={(e) => setSearchValue(e.target.value.trimStart())}
                     onFocus={(e) => setShowResult(true)}
                 />
                 {/* !!searchValue chuyển searchValue sang dạng boolean 
