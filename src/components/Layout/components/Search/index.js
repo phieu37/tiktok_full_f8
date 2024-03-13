@@ -14,15 +14,39 @@ function Search() {
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [showResult, setShowResult] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const inputRef = useRef();
 
+    // Api fake để test
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setSearchResult([1, 2, 3]);
+    //         // setSearchResult([]);
+    //     }, 0);
+    // }, []);
+
+    // Api thật
     useEffect(() => {
-        setTimeout(() => {
-            setSearchResult([1, 2, 3]);
-            // setSearchResult([]);
-        }, 0);
-    }, []);
+        // Ko có searchValue thì return để thoát hàm, trim fix bug dấu cách
+        if (!searchValue.trim()) {
+            setSearchResult([])
+            return;
+        }
+
+        setLoading(true);
+
+        // encodeURIComponent() mã hóa sang định dạng URL để ko vi phạm quy ước của querry parameter
+        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(searchValue)}&type=less`)
+            .then((res) => res.json(res))
+            .then((res) => {
+                setSearchResult(res.data);
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+            })
+    }, [searchValue]);
 
     // tách hàm làm 3 việc: xóa KQ tìm kiếm, xóa text, focus lại (dùng lại hàm nhiều lần)
     const handleClear = () => {
@@ -38,14 +62,15 @@ function Search() {
     return (
         <HeadlessTippy
             interactive
-            visible={showResult && searchResult.length > 0} // Có 2 đk: KQ tìm kiếm + showResult thì hiện
+            visible={showResult && searchResult.length > 0} // Có 2 đk hiện KQ show: KQ tìm kiếm + showResult
             render={(attrs) => (
                 <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                     <PopperWrapper>
                         <h4 className={cx('search-title')}>Accounts</h4>
-                        <AccountItem />
-                        <AccountItem />
-                        <AccountItem />
+                        {searchResult.map((result) => (
+                            // lấy id và truyền cả obj ra ngoài với prop là data
+                            <AccountItem key={result.id} data={result} />
+                        ))}
                     </PopperWrapper>
                 </div>
             )}
@@ -61,13 +86,14 @@ function Search() {
                     onFocus={(e) => setShowResult(true)}
                 />
                 {/* !!searchValue chuyển searchValue sang dạng boolean 
-                (có searchValue mới hiển thị button clear) */}
-                {!!searchValue && (
+                (có searchValue và ko có loading mới hiển thị button clear -> fix icon đè nhau) */}
+                {!!searchValue && !loading && (
                     <button className={cx('clear')} onClick={handleClear}>
                         <FontAwesomeIcon icon={faCircleXmark} />
                     </button>
                 )}
-                {/* <FontAwesomeIcon className={cx('loading')} icon={faSpinner} /> */}
+                {/* Có loading thì hiển thị */}
+                {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
 
                 <button className={cx('search-btn')}>
                     {/* <FontAwesomeIcon icon={faMagnifyingGlass} /> */}
