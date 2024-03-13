@@ -1,8 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
 import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeadlessTippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
+
+import * as searchServices from '~/apiServices/searchServices';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import AccountItem from '~/components/AccountItem';
 import { SearchIcon } from '~/components/icons';
@@ -20,7 +23,7 @@ function Search() {
     // truyền value muốn delay và truyền thời gian muốn delay theo hooks vừa custom
     // user ngừng gõ 500ms mới bắn api
     // 1. '' -> 2. 'h' -> 3. 'ho' -> 4. 'hoa'
-    const debounced = useDebounce(searchValue, 500)
+    const debounced = useDebounce(searchValue, 500);
 
     const inputRef = useRef();
 
@@ -38,22 +41,60 @@ function Search() {
         // .trimStart() chỗ input giống tiktok
         // if (!searchValue.trim()) {
         if (!debounced) {
-            setSearchResult([])
+            setSearchResult([]);
             return;
         }
 
-        setLoading(true);
+        // setLoading(true);
+        // const fetchApi = async () => {
+        //     try {
+        //         const res = await request.get('users/search', {
+        //             params: {
+        //                 q: debounced,
+        //                 type: 'less',
+        //             },
+        //         });
+        //         setSearchResult(res.data);
+        //         setLoading(false);
+        //     } catch (error) {
+        //         setLoading(false);
+        //     }
+        // };
+        // fetchApi();
 
-        // encodeURIComponent() mã hóa sang định dạng URL để ko vi phạm quy ước của querry parameter
-        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
-            .then((res) => res.json(res))
-            .then((res) => {
-                setSearchResult(res.data);
-                setLoading(false);
-            })
-            .catch(() => {
-                setLoading(false);
-            })
+        // // C1: fetch
+        // // encodeURIComponent() mã hóa sang định dạng URL để ko vi phạm quy ước của querry parameter
+        // // fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
+        // //     .then((res) => res.json(res))
+        // // C2: axios
+        // // axios
+        // // C3: tối ưu với instance
+        // request
+        //     .get(`users/search`, {
+        //         params: {
+        //             q: debounced,
+        //             type: 'less',
+        //         },
+        //     })
+        //     .then((res) => {
+        //         // console.log(res);
+        //         setSearchResult(res.data);
+        //         setLoading(false);
+        //     })
+        //     .catch(() => {
+        //         setLoading(false);
+        //     });
+
+        const fetchApi = async () => {
+            setLoading(true);
+
+            const result = await searchServices.search(debounced);
+            setSearchResult(result);
+
+            setLoading(false);
+        };
+
+        fetchApi();
     }, [debounced]);
 
     // tách hàm làm 3 việc: xóa KQ tìm kiếm, xóa text, focus lại (dùng lại hàm nhiều lần)
