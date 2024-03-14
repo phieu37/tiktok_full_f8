@@ -63,12 +63,13 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
                                 }}
                             />
                         )}
-                        {renderItems()}
+                        <div className={cx('menu-body')}>{renderItems()}</div>
                     </PopperWrapper>
                 </div>
             )}
             // set về p/tử đầu tiên, lấy từ 0 đến 1
             onHide={() => setHistory((prev) => prev.slice(0, 1))}
+
         >
             {children}
         </Tippy>
