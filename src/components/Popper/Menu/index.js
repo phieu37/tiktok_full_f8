@@ -9,9 +9,9 @@ import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-const defaultFn = () => {}
+const defaultFn = () => {};
 
-function Menu({ children, items = [], onChange = defaultFn }) {
+function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn }) {
     // Ban đầu sẽ render ra items -> truyền obj {} : đại diện cho trang hiện tại tương tự obj children
     const [history, setHistory] = useState([{ data: items }]);
 
@@ -34,7 +34,7 @@ function Menu({ children, items = [], onChange = defaultFn }) {
                             // console.log(item.children);
                             setHistory((prev) => [...prev, item.children]);
                         } else {
-                            onChange(item)
+                            onChange(item);
                         }
                     }}
                 />
@@ -48,6 +48,7 @@ function Menu({ children, items = [], onChange = defaultFn }) {
             interactive
             delay={[0, 700]}
             offset={[12, 8]} // custom chiều ngang = 12px, cao = 8px
+            hideOnClick={hideOnClick}
             placement="bottom-end"
             render={(attrs) => (
                 <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
@@ -67,7 +68,7 @@ function Menu({ children, items = [], onChange = defaultFn }) {
                 </div>
             )}
             // set về p/tử đầu tiên, lấy từ 0 đến 1
-            onHide={() => setHistory(prev => prev.slice(0, 1))}
+            onHide={() => setHistory((prev) => prev.slice(0, 1))}
         >
             {children}
         </Tippy>

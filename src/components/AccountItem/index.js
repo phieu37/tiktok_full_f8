@@ -8,7 +8,7 @@ import styles from './AccountItem.module.scss';
 const cx = classNames.bind(styles);
 
 // test img lỗi là cái ::
-// to={`/@${data.nickname}`} để vào trang profile
+// to={`/@${data.nickname}`} để vào trang profile(muốn có @ trước name thì để ko thì bỏ)
 function AccountItem({ data }) {
     return (
         <Link to={`/@${data.nickname}`} className={cx('wrapper')}>

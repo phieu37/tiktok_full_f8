@@ -15,11 +15,13 @@
     input {
         flex: 1;
         height: 100%;
-        // padding: 12px 0;
         color: var(--black);
         font-size: 1.6rem;
+        font-weight: 400;
+        padding-right: 40px;
         caret-color: var(--primary);
         background-color: transparent;
+        font-family: var(--font-family);
     }
 
     input:not(:placeholder-shown) ~ .search-btn {

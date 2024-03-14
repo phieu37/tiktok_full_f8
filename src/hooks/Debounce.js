@@ -1,3 +1,4 @@
+// Tạo hàm delay gõ xong mới loading
 const { useState, useEffect } = require('react');
 
 function useDebounce(value, delay) {

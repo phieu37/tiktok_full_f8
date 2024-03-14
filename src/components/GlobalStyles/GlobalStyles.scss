@@ -8,6 +8,8 @@
     --white: #fff;
     --text-color: #161823;
 
+    --font-family: 'IBM Plex Sans', 'TikTokDisplayFont', sans-serif;
+
     // Default layout
     --default-layout-header-height: 60px;
     --default-layout-width: 1150px;
@@ -18,7 +20,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    // font-family: 'TikTokDisplayFont', 'IBM Plex Sans', sans-serif;
 }
 
 html {
@@ -26,7 +27,7 @@ html {
 }
 
 body {
-    font-family: 'TikTokDisplayFont', 'IBM Plex Sans', sans-serif;
+    font-family: var(--font-family);
     font-size: 1.6rem;
     line-height: 1.5;
     text-rendering: optimizeSpeed; // tối ưu tốc độ hiển thị font

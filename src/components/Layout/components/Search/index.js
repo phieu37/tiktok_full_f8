@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeadlessTippy from '@tippyjs/react/headless';
@@ -108,6 +108,16 @@ function Search() {
         setShowResult(false);
     };
 
+    const handleChange = (e) => {
+        // C1: Nếu giá trị bắt đầu ko pải dấu cách thì set giá trị
+        const searchValue = e.target.value;
+        if (!searchValue.startsWith(' ')) {
+            setSearchValue(searchValue);
+        }
+        // C2:
+        // setSearchValue(e.target.value.trimStart())
+    };
+
     return (
         <HeadlessTippy
             interactive
@@ -131,7 +141,7 @@ function Search() {
                     value={searchValue}
                     placeholder="Search accounts and videos"
                     spellCheck={false}
-                    onChange={(e) => setSearchValue(e.target.value.trimStart())}
+                    onChange={handleChange}
                     onFocus={(e) => setShowResult(true)}
                 />
                 {/* !!searchValue chuyển searchValue sang dạng boolean 
@@ -144,7 +154,7 @@ function Search() {
                 {/* Có loading thì hiển thị */}
                 {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
 
-                <button className={cx('search-btn')}>
+                <button className={cx('search-btn')} onMouseDown={(e) => e.preventDefault()}>
                     {/* <FontAwesomeIcon icon={faMagnifyingGlass} /> */}
                     <SearchIcon />
                 </button>
