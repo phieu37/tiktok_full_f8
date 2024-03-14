@@ -1,5 +1,5 @@
 // C1: import thẳng header
-// import Header from '~/components/Layout/DefaultLayout/Header';
+// import Header from '~/layouts/DefaultLayout/Header';
 
 // function Upload() {
 //     return (
