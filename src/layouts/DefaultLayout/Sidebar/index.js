@@ -1,14 +1,4 @@
-import classNames from 'classnames/bind';
-import styles from './Sidebar.module.scss';
-
-const cx = classNames.bind(styles);
-
-function Sidebar() {
-    return (
-        <aside className={cx('wrapper')}>
-            <h2>Sidebar</h2>
-        </aside>
-    );
-}
-
-export default Sidebar;
+// vai trò  ở đây để import và export ra chính component Sidebar.js
+// nên có thể import kiểu này: import AccountItem from '~/components/Sidebar';
+// thay vì kiểu này nếu ko có file index.js: import AccountItem from '~/components/Sidebar/Sidebar';
+export { default } from './Sidebar';

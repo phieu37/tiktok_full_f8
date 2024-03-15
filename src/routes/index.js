@@ -1,25 +1,8 @@
-// chứa tuyến đường đi đâu về đâu
-import config from '~/config';
+// vai trò  ở đây để import và export ra chính component routes.js
+// nên có thể import kiểu này: import AccountItem from '~/components/routes';
+// thay vì kiểu này nếu ko có file index.js: import AccountItem from '~/components/routes/routes';
 
-// Layouts
-import { HeaderOnly } from '~/layouts';
-
-// Page
-import Home from '~/pages/Home';
-import Following from '~/pages/Following';
-import Profile from '~/pages/Profile';
-import Upload from '~/pages/Upload';
-import Search from '~/pages/Search';
-
-// Public routes
-const publicRoutes = [
-    { path: config.routes.home, component: Home },
-    { path: config.routes.following, component: Following },
-    { path: config.routes.profile, component: Profile },
-    { path: config.routes.upload, component: Upload, layout: HeaderOnly },
-    { path: config.routes.search, component: Search, layout: null },
-];
-
-const privateRoutes = [];
-
-export { publicRoutes, privateRoutes };
+// export hết ra
+// export * from './routes';
+// hoặc export chuẩn từng cái
+export { publicRoutes, privateRoutes } from './routes';

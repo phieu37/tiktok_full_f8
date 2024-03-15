@@ -1,13 +1,4 @@
-import PropTypes from 'prop-types';
-import './GlobalStyles.scss';
-
-function GlobalStyles({ children }) {
-    return children;
-}
-
-// validate
-GlobalStyles.propTypes = {
-    children: PropTypes.node.isRequired,
-};
-
-export default GlobalStyles;
+// vai trò  ở đây để import và export ra chính component GlobalStyles.js
+// nên có thể import kiểu này: import AccountItem from '~/components/GlobalStyles';
+// thay vì kiểu này nếu ko có file index.js: import AccountItem from '~/components/GlobalStyles/GlobalStyles';
+export { default } from './GlobalStyles';
