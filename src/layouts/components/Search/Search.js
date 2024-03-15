@@ -7,8 +7,8 @@ import classNames from 'classnames/bind';
 
 import * as searchServices from '~/services/searchService';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import AccountItem from '~/components/AccountItem/AccountItem';
-import { SearchIcon } from '~/components/Icons/Icons';
+import AccountItem from '~/components/AccountItem';
+import { SearchIcon } from '~/components/Icons';
 import { useDebounce } from '~/hooks';
 import styles from './Search.module.scss';
 
@@ -17,13 +17,13 @@ const cx = classNames.bind(styles);
 function Search() {
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-    const [showResult, setShowResult] = useState(true);
+    const [showResult, setShowResult] = useState(false);
     const [loading, setLoading] = useState(false);
 
     // truyền value muốn delay và truyền thời gian muốn delay theo hooks vừa custom
     // user ngừng gõ 500ms mới bắn api
     // 1. '' -> 2. 'h' -> 3. 'ho' -> 4. 'hoa'
-    const debounced = useDebounce(searchValue, 500);
+    const debouncedValue = useDebounce(searchValue, 500);
 
     const inputRef = useRef();
 
@@ -40,7 +40,7 @@ function Search() {
         // Ko có searchValue thì return để thoát hàm, trim fix bug dấu cách
         // .trimStart() chỗ input giống tiktok
         // if (!searchValue.trim()) {
-        if (!debounced) {
+        if (!debouncedValue) {
             setSearchResult([]);
             return;
         }
@@ -50,7 +50,7 @@ function Search() {
         //     try {
         //         const res = await request.get('users/search', {
         //             params: {
-        //                 q: debounced,
+        //                 q: debouncedValue,
         //                 type: 'less',
         //             },
         //         });
@@ -64,7 +64,7 @@ function Search() {
 
         // // C1: fetch
         // // encodeURIComponent() mã hóa sang định dạng URL để ko vi phạm quy ước của querry parameter
-        // // fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
+        // // fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debouncedValue)}&type=less`)
         // //     .then((res) => res.json(res))
         // // C2: axios
         // // axios
@@ -72,7 +72,7 @@ function Search() {
         // request
         //     .get(`users/search`, {
         //         params: {
-        //             q: debounced,
+        //             q: debouncedValue,
         //             type: 'less',
         //         },
         //     })
@@ -88,14 +88,14 @@ function Search() {
         const fetchApi = async () => {
             setLoading(true);
 
-            const result = await searchServices.search(debounced);
+            const result = await searchServices.search(debouncedValue);
             setSearchResult(result);
 
             setLoading(false);
         };
 
         fetchApi();
-    }, [debounced]);
+    }, [debouncedValue]);
 
     // tách hàm làm 3 việc: xóa KQ tìm kiếm, xóa text, focus lại (dùng lại hàm nhiều lần)
     const handleClear = () => {
@@ -128,6 +128,12 @@ function Search() {
                     <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                         <PopperWrapper>
                             <h4 className={cx('search-title')}>Accounts</h4>
+                            {/* có thể đưa ra 1 component khác rồi truyền biến searchResult sang component đó 
+                            và map luôn trong componet rồi sử dụng React.memo cho component đó thì khi các component khác
+                            re-render thay đổi mà searchResult ko thay đổi sẽ k bị chạy lại vòng map                          
+                            {searchResult.map((result) => (
+                                <AccountItem key={result.id} data={result} />
+                            ))}  */}
                             {searchResult.map((result) => (
                                 // lấy id và truyền cả obj ra ngoài với prop là data
                                 // Vì api trả về data là obj nên validate data là obj(khi truyền vào kiểu khác sẽ bắn ra lỗi)

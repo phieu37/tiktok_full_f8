@@ -1,4 +1,4 @@
-import Header from '~/layouts/components/Header/Header';
+import Header from '~/layouts/components/Header';
 
 // chứa all layout hiện tại
 // content động truyền từ ngoài vào -> children
