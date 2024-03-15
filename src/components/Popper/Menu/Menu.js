@@ -30,8 +30,7 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
                     data={item}
                     onClick={() => {
                         if (isParent) {
-                            // Nếu có isParent thì push cái mói vào mảng ấp 2 3 ...
-                            // Ngược lại trả ra item được click vào
+                            // Nếu có isParent thì push cái mói vào mảng cấp 2 3 ...  Ngược lại trả ra item được click vào
                             // console.log(item.children);
                             setHistory((prev) => [...prev, item.children]);
                         } else {
@@ -43,6 +42,31 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
         });
     };
 
+    const handleBack = () => {
+        setHistory((prev) => prev.slice(0, prev.length - 1));
+    }
+
+    const renderResult = (attrs) => (
+        <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
+            <PopperWrapper className={cx('menu-popper')}>
+                {/* Nếu > 1 tức là trang 2,3... trả ra trang đó */}
+                {/* onBack xóa p/tử cuối để lùi về 1 cấp -> cắt từ ơ/tử 0 đếm gầm cuối */}
+                {history.length > 1 && (
+                    <Header
+                        title={current.title}
+                        onBack={handleBack}
+                    />
+                )}
+                <div className={cx('menu-body')}>{renderItems()}</div>
+            </PopperWrapper>
+        </div>
+    );
+
+    // reset to first page, lấy từ 0 đến 1
+    const handleResetMenu = () => {
+        setHistory((prev) => prev.slice(0, 1));
+    };
+
     return (
         <Tippy
             // visible
@@ -51,25 +75,8 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
             offset={[12, 8]} // custom chiều ngang = 12px, cao = 8px
             hideOnClick={hideOnClick}
             placement="bottom-end"
-            render={(attrs) => (
-                <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
-                    <PopperWrapper className={cx('menu-popper')}>
-                        {/* Nếu > 1 tức là trang 2,3... trả ra trang đó */}
-                        {/* onBack xóa p/tử cuối để lùi về 1 cấp -> cắt từ ơ/tử 0 đếm gầm cuối */}
-                        {history.length > 1 && (
-                            <Header
-                                title={current.title}
-                                onBack={() => {
-                                    setHistory((prev) => prev.slice(0, prev.length - 1));
-                                }}
-                            />
-                        )}
-                        <div className={cx('menu-body')}>{renderItems()}</div>
-                    </PopperWrapper>
-                </div>
-            )}
-            // set về p/tử đầu tiên, lấy từ 0 đến 1
-            onHide={() => setHistory((prev) => prev.slice(0, 1))}
+            render={renderResult}
+            onHide={handleResetMenu}
         >
             {children}
         </Tippy>

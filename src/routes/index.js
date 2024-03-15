@@ -3,6 +3,6 @@
 // thay vì kiểu này nếu ko có file index.js: import AccountItem from '~/components/routes/routes';
 
 // export hết ra
-// export * from './routes';
+export * from './routes';
 // hoặc export chuẩn từng cái
-export { publicRoutes, privateRoutes } from './routes';
+// export { publicRoutes, privateRoutes } from './routes';

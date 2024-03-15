@@ -24,20 +24,20 @@ import 'tippy.js/dist/tippy.css';
 import { Link } from 'react-router-dom';
 
 import config from '~/config';
-import Button from '~/components/Button/Button';
+import Button from '~/components/Button';
 // import { Wrapper as PopperWrapper } from '~/components/Popper';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
 // import AccountItem from '~/components/AccountItem';
-import Menu from '~/components/Popper/Menu/Menu';
+import Menu from '~/components/Popper/Menu';
 import {
     InboxIcon,
     MessageIcon,
     // SearchIcon,
     UploadIcon,
 } from '~/components/Icons/Icons';
-import Image from '~/components/Image/Image';
-import Search from '../Search/Search';
+import Image from '~/components/Image';
+import Search from '../Search';
 
 const cx = classNames.bind(styles);
 // console.log(images.logo); // default: "/static/media/logo.a6485b602042e794da9eb0c0d4f7c77c.svg"
