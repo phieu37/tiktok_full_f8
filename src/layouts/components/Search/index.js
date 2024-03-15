@@ -130,6 +130,7 @@ function Search() {
                             <h4 className={cx('search-title')}>Accounts</h4>
                             {searchResult.map((result) => (
                                 // lấy id và truyền cả obj ra ngoài với prop là data
+                                // Vì api trả về data là obj nên validate data là obj(khi truyền vào kiểu khác sẽ bắn ra lỗi)
                                 <AccountItem key={result.id} data={result} />
                             ))}
                         </PopperWrapper>
