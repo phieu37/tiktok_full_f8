@@ -47,6 +47,7 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
     }
 
     const renderResult = (attrs) => (
+        // tabIndex="-1" để ko bị focus vào khi ấn dấu Tab
         <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
             <PopperWrapper className={cx('menu-popper')}>
                 {/* Nếu > 1 tức là trang 2,3... trả ra trang đó */}
